@@ -2,11 +2,12 @@ import java.sql.*;
 
 public class OlympicServiceDB {
 
-    private final static String INSERT_QUERY = "insert into olympicgame (pId, pName, pAge, pGame, pCountry) values (?,?,?,?,?)";
+    private final static String INSERT_QUERY = "insert into olympicgame (pId, pName, pAge, pGame, pCountry, pUsername, pPassword) values (?,?,?,?,?,?,?)";
     private final static String RETRIEVE_QUERY = "select * from olympicgame where pId=";
     private final static String DELETEQUERY = "delete from olympicgame where pId=";
 
     Player player = new Player();
+
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -40,16 +41,38 @@ public class OlympicServiceDB {
         }
     }
 
-    public void savePlayerDetails(int id, String name, int age, String game, String country){
+    public void login(String uname, String password){
+        String searchQuery = "select * from olympicgame where pUsername='"+uname+"' and pPassword='"+password+"'";
+        openDBConnection();
+        try{
+            preparedStatement = connection.prepareStatement(searchQuery);
+            preparedStatement.execute();
+            if(preparedStatement !=null){
+                OlympicService olympicService = new OlympicService();
+                olympicService.startOlympicApp();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void savePlayerDetails(int id, String name, int age, String game, String country, String username, String password){
         try{
             System.out.println("saving player..");
             openDBConnection();
+            System.out.println("prepared staement statrt");
             preparedStatement = connection.prepareStatement(INSERT_QUERY);
+            System.out.println("preparedstatement end");
+            System.out.println("set params");
             preparedStatement.setInt(1,id);
             preparedStatement.setString(2,name);
             preparedStatement.setInt(3,age);
             preparedStatement.setString(4,game);
             preparedStatement.setString(5,country);
+            preparedStatement.setString(6,username);
+            preparedStatement.setString(7,password);
+            System.out.println("set params done");
+            System.out.println("execute prepared statement");
             preparedStatement.execute();
             System.out.println("player saved");
             closeDBConnection();
