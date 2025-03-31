@@ -1,0 +1,1 @@
+CREATE TABLE player (playerId int, name text, dob date, gameType text, country text, userName text, password text);
