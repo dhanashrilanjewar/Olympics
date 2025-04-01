@@ -11,14 +11,15 @@ public class DeleteProfileUI {
         PlayerDAOService playerDAOService = new PlayerDAOService();
         LoginPlayerUI loginPlayerUI = new LoginPlayerUI();
 
-        int userInput = 0;
+        int userInput;
 
         System.out.println("Do you really want to delete your profile?\n1 - Yes\n2 - No");
         userInput = ScannerBean.getScanner().nextInt();
 
         switch (userInput) {
             case (1):
-                playerDAOService.delete(player);
+                playerDAOService.delete(player.getId());
+                System.out.println("Player is deleted.");
                 loginPlayerUI.loginPlayer();
                 break;
             case (2):

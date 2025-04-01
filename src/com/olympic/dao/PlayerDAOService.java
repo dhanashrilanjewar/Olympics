@@ -110,35 +110,36 @@ public class PlayerDAOService {
             preparedStatement.execute();
 
             dbConfigureService.closeDBConnection();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Player updated");
+
     }
 
-    public void updatePassword(Player player){
+    public void updatePassword(Integer playerId,String password){
         DBConfigureService dbConfigureService = new DBConfigureService();
         try {
             dbConfigureService.openDBConnection();
-            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.UPDATE_PASSWORD+player.getId());
-            preparedStatement.setString(1, player.getPassword());
+            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.UPDATE_PASSWORD+playerId);
+            preparedStatement.setString(1, password);
             preparedStatement.execute();
             dbConfigureService.closeDBConnection();
-            System.out.println("Password is updated successfully.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void delete(Player player){
+    public void delete(int playerId){
         DBConfigureService dbConfigureService = new DBConfigureService();
 
         try {
             dbConfigureService.openDBConnection();
-            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.DELETE_PLAYER+player.getId());
+            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.DELETE_PLAYER+playerId);
             preparedStatement.execute();
             dbConfigureService.closeDBConnection();
-            System.out.println("Player is deleted successfully.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

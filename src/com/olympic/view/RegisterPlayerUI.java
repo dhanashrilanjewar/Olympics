@@ -10,10 +10,14 @@ import java.util.Scanner;
 
 public class RegisterPlayerUI {
     PlayerDAOService playerDAOService;
+    WelcomePlayerUI welcomePlayerUI;
+
 
     public Player registerPlayer() {
+        welcomePlayerUI = new WelcomePlayerUI();
         Scanner scanner = ScannerBean.getScanner();
         playerDAOService = new PlayerDAOService();
+
         Player player = new Player();
         System.out.println("Enter player name : ");
         player.setName(scanner.next());
@@ -30,6 +34,7 @@ public class RegisterPlayerUI {
 
         if (!playerDAOService.checkUsernameExists(player.getUsername())) {
             playerDAOService.save(player);
+            welcomePlayerUI.welcomePlayer(player);
         } else {
             System.out.println("Username already exist. Please enter different username.");
             registerPlayer();

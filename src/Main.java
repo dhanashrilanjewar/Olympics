@@ -7,7 +7,5 @@ public class Main {
         ScannerBean.getScanner();
         new OlympicService().homePage();
         ScannerBean.closeScanner();
-
-
     }
 }

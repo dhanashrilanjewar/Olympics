@@ -1,5 +1,6 @@
 package com.olympic.view;
 
+import com.olympic.bean.ScannerBean;
 import com.olympic.dao.PlayerDAOService;
 import com.olympic.model.entity.Player;
 
@@ -7,12 +8,13 @@ import java.util.Scanner;
 
 public class LoginPlayerUI {
 
-    public Player loginPlayer() {
+    public void loginPlayer() {
         String username, password;
 
         PlayerDAOService playerDAOService = new PlayerDAOService();
         WelcomePlayerUI welcomePlayerUI = new WelcomePlayerUI();
-        Scanner scanner = new Scanner(System.in);
+
+        Scanner scanner = ScannerBean.getScanner();
 
         System.out.println("enter the username : ");
         username = scanner.next();
@@ -25,9 +27,8 @@ public class LoginPlayerUI {
             System.out.println("login successfully!");
             welcomePlayerUI.welcomePlayer(player);
         } else {
+            System.out.println("Enter correct username and password.");
             loginPlayer();
         }
-
-        return player;
     }
 }
