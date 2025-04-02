@@ -5,26 +5,28 @@ import com.olympic.dao.PlayerDAOService;
 import com.olympic.model.entity.Player;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginPlayerUI {
 
     public void loginPlayer() {
+
         String username, password;
+        Scanner scanner = ScannerBean.getScanner();
 
         PlayerDAOService playerDAOService = new PlayerDAOService();
         WelcomePlayerUI welcomePlayerUI = new WelcomePlayerUI();
 
-        Scanner scanner = ScannerBean.getScanner();
-
-        System.out.println("enter the username : ");
+        System.out.println("------------------LOGIN PAGE------------------");
+        System.out.println("Enter the username : ");
         username = scanner.next();
-        System.out.println("enter the password : ");
+        System.out.println("Enter the password : ");
         password = scanner.next();
 
         Player player = playerDAOService.getPlayerByUserIDandPassword(username, password);
 
         if (player != null) {
-            System.out.println("login successfully!");
             welcomePlayerUI.welcomePlayer(player);
         } else {
             System.out.println("Enter correct username and password.");

@@ -7,12 +7,13 @@ import com.olympic.model.entity.Player;
 public class DeleteProfileUI {
     public void deleteProfile(Player player) {
 
-        WelcomePlayerUI welcomePlayerUI = new WelcomePlayerUI();
-        PlayerDAOService playerDAOService = new PlayerDAOService();
-        LoginPlayerUI loginPlayerUI = new LoginPlayerUI();
-
         int userInput;
 
+        WelcomePlayerUI welcomePlayerUI = new WelcomePlayerUI();
+        PlayerDAOService playerDAOService = new PlayerDAOService();
+        RegisterPlayerUI registerPlayerUI = new RegisterPlayerUI();
+
+        System.out.println("------------------DELETE PROFILE------------------");
         System.out.println("Do you really want to delete your profile?\n1 - Yes\n2 - No");
         userInput = ScannerBean.getScanner().nextInt();
 
@@ -20,7 +21,8 @@ public class DeleteProfileUI {
             case (1):
                 playerDAOService.delete(player.getId());
                 System.out.println("Player is deleted.");
-                loginPlayerUI.loginPlayer();
+                System.out.println("------------------------------------\n");
+                registerPlayerUI.registerPlayer();
                 break;
             case (2):
                 welcomePlayerUI.welcomePlayer(player);

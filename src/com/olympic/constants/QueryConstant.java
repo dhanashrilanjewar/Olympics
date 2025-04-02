@@ -11,4 +11,5 @@ public class QueryConstant {
     public final static String DELETE_PLAYER = "delete from player where playerId=";
     public final static String UPDATE_PLAYER = "update player set name=?, DOB=?, gameType=?, country=? where playerId=";
     public final static String UPDATE_PASSWORD = "update player set password=? where playerId=";
+    public final static String GET_PLAYER_BY_USERNAME_AND_DOB = "select * from player where username='?U' and DOB= '?D'";
 }

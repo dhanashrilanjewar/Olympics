@@ -8,6 +8,7 @@ import com.olympic.util.DateUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class PlayerDAOService {
 
@@ -86,7 +87,7 @@ public class PlayerDAOService {
                 player.setDob(resultSet.getDate("dob"));
                 player.setGame(resultSet.getString("gameType"));
                 player.setCountry(resultSet.getString("country"));
-                System.out.println("Player details are : \n" + player);
+                System.out.println("Player details are : \n" + player + "\n");
             }
             dbConfigureService.closeDBConnection();
         } catch (SQLException e) {
@@ -95,13 +96,38 @@ public class PlayerDAOService {
         return player;
     }
 
-    public void updatePlayer(Player player){
+    public Player getPlayerByUsernameandDOB(String username, String dob) {
+        DBConfigureService dbConfigureService = new DBConfigureService();
+        Player player = null;
+        try {
+            dbConfigureService.openDBConnection();
+            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.GET_PLAYER_BY_USERNAME_AND_DOB.replace("?U", username).replace("?D", dob));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                player = new Player();
+                player.setId(resultSet.getInt("playerId"));
+                player.setName(resultSet.getString("name"));
+                player.setDob(resultSet.getDate("dob"));
+                player.setGame(resultSet.getString("gameType"));
+                player.setCountry(resultSet.getString("country"));
+                player.setPassword(resultSet.getString("password"));
+                //System.out.println("Player details are : \n" + player + "\n");
+            }
+            dbConfigureService.closeDBConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return player;
+    }
+
+    public void updatePlayer(Player player) {
         DBConfigureService dbConfigureService = new DBConfigureService();
 
         try {
             dbConfigureService.openDBConnection();
 
-            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.UPDATE_PLAYER+player.getId());
+            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.UPDATE_PLAYER + player.getId());
 
             preparedStatement.setString(1, player.getName());
             preparedStatement.setDate(2, DateUtil.convertUtiltoSQLDate(player.getDob()));
@@ -114,14 +140,13 @@ public class PlayerDAOService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    public void updatePassword(Integer playerId,String password){
+    public void updatePassword(Integer playerId, String password) {
         DBConfigureService dbConfigureService = new DBConfigureService();
         try {
             dbConfigureService.openDBConnection();
-            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.UPDATE_PASSWORD+playerId);
+            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.UPDATE_PASSWORD + playerId);
             preparedStatement.setString(1, password);
             preparedStatement.execute();
             dbConfigureService.closeDBConnection();
@@ -131,12 +156,12 @@ public class PlayerDAOService {
         }
     }
 
-    public void delete(int playerId){
+    public void delete(int playerId) {
         DBConfigureService dbConfigureService = new DBConfigureService();
 
         try {
             dbConfigureService.openDBConnection();
-            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.DELETE_PLAYER+playerId);
+            PreparedStatement preparedStatement = dbConfigureService.getConnection().prepareStatement(QueryConstant.DELETE_PLAYER + playerId);
             preparedStatement.execute();
             dbConfigureService.closeDBConnection();
 

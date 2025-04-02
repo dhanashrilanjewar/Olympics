@@ -10,12 +10,13 @@ import java.util.Scanner;
 
 public class UpdateProfileUI {
 
-    PlayerDAOService playerDAOService;
-    Scanner scanner = ScannerBean.getScanner();
+    public void updatePlayerProfile(Player player) {
 
-    public void updatePlayerProfile(Player player){
-        playerDAOService = new PlayerDAOService();
+        Scanner scanner = ScannerBean.getScanner();
 
+        PlayerDAOService playerDAOService = new PlayerDAOService();
+
+        System.out.println("------------------UPDATE PROFILE------------------");
         System.out.println("Enter your name : ");
         player.setName(scanner.next());
         System.out.println("Enter you DOB : ");
@@ -27,5 +28,6 @@ public class UpdateProfileUI {
 
         playerDAOService.updatePlayer(player);
         System.out.println("Player profile is updated");
+        System.out.println("------------------------------------\n");
     }
 }
