@@ -3,18 +3,28 @@ package com.olympic.bean;
 import java.util.Scanner;
 
 public class ScannerBean {
-    private static Scanner scannerBean;
+    private static Scanner scanner;
 
     private static void newScanner() {
-        scannerBean = new Scanner(System.in);
+        scanner = new Scanner(System.in);
     }
 
     public static Scanner getScanner() {
         newScanner();
-        return scannerBean;
+        return scanner;
     }
 
     public static void closeScanner() {
-        scannerBean.close();
+        scanner.close();
+    }
+
+    public static String readStringInput(String msg) {
+        System.out.println(msg);
+        return scanner.nextLine();
+    }
+
+    public static int readIntInput(String msg) {
+        System.out.println(msg);
+        return scanner.nextInt();
     }
 }

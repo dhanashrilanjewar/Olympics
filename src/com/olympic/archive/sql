@@ -1,1 +1,3 @@
 CREATE TABLE player (playerId int, name text, dob date, gameType text, country text, userName text, password text);
+ALTER TABLE player ADD email TEXT;
+ALTER TABLE player ADD userType TEXT;

@@ -2,31 +2,42 @@ package com.olympic.view;
 
 import com.olympic.bean.ScannerBean;
 import com.olympic.dao.PlayerDAOService;
-import com.olympic.model.entity.Player;
+import com.olympic.model.entity.User;
 import com.olympic.util.DateUtil;
+import com.olympic.validations.PlayerValidation;
 
 import java.util.Scanner;
 
 
 public class UpdateProfileUI {
 
-    public void updatePlayerProfile(Player player) {
+    public void updatePlayerProfile(User user) {
 
         Scanner scanner = ScannerBean.getScanner();
-
+        boolean isEmailValid;
         PlayerDAOService playerDAOService = new PlayerDAOService();
+        PlayerValidation playerValidation = new PlayerValidation();
 
         System.out.println("------------------UPDATE PROFILE------------------");
         System.out.println("Enter your name : ");
-        player.setName(scanner.next());
+        user.setName(scanner.next());
         System.out.println("Enter you DOB : ");
-        player.setDob(DateUtil.convertStringtoDate(scanner.next()));
+        user.setDob(DateUtil.convertStringtoDate(scanner.next()));
         System.out.println("Enter Game type : ");
-        player.setGame(scanner.next());
+        user.setGame(scanner.next());
         System.out.println("Enter your country : ");
-        player.setCountry(scanner.next());
+        user.setCountry(scanner.next());
+        System.out.println("Enter your email : ");
+        user.setEmail(scanner.next());
 
-        playerDAOService.updatePlayer(player);
+        isEmailValid = playerValidation.validateEmail(user.getEmail());
+        if(!isEmailValid){
+            System.out.println("Invalid email id, please enter valid email id");
+            System.out.println("\n");
+            updatePlayerProfile(user);
+        }
+
+        playerDAOService.updatePlayer(user);
         System.out.println("Player profile is updated");
         System.out.println("------------------------------------\n");
     }

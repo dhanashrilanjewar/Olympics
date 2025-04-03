@@ -2,10 +2,10 @@ package com.olympic.view;
 
 import com.olympic.bean.ScannerBean;
 import com.olympic.dao.PlayerDAOService;
-import com.olympic.model.entity.Player;
+import com.olympic.model.entity.User;
 
 public class DeleteProfileUI {
-    public void deleteProfile(Player player) {
+    public void deleteProfile(User user) {
 
         int userInput;
 
@@ -19,13 +19,13 @@ public class DeleteProfileUI {
 
         switch (userInput) {
             case (1):
-                playerDAOService.delete(player.getId());
+                playerDAOService.delete(user.getId());
                 System.out.println("Player is deleted.");
                 System.out.println("------------------------------------\n");
                 registerPlayerUI.registerPlayer();
                 break;
             case (2):
-                welcomePlayerUI.welcomePlayer(player);
+                welcomePlayerUI.welcomePlayer(user);
                 break;
         }
     }

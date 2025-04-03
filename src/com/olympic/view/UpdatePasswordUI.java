@@ -2,13 +2,13 @@ package com.olympic.view;
 
 import com.olympic.bean.ScannerBean;
 import com.olympic.dao.PlayerDAOService;
-import com.olympic.model.entity.Player;
+import com.olympic.model.entity.User;
 import com.olympic.validations.PlayerValidation;
 
 import java.util.Scanner;
 
 public class UpdatePasswordUI {
-    public void updatePassword(Player player) {
+    public void updatePassword(User user) {
 
         boolean isPasswordValid;
         Scanner scanner = ScannerBean.getScanner();
@@ -28,16 +28,16 @@ public class UpdatePasswordUI {
                     "\natleast one number, \natleast one special character except hyphen, " +
                     "\nno space and length between 6 to 10 \n");
             System.out.println("Please enter the details again.\n");
-            updatePassword(player);
+            updatePassword(user);
         }
 
         if (newPassword.equals(confirmPassword)) {
-            playerDAOService.updatePassword(player.getId(), newPassword);
+            playerDAOService.updatePassword(user.getId(), newPassword);
             System.out.println("Password is updated successfully.");
             System.out.println("------------------------------------\n");
         } else {
             System.out.println("Password does not match. please enter password again.");
-            updatePassword(player);
+            updatePassword(user);
         }
 
     }

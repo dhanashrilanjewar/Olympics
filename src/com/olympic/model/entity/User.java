@@ -2,17 +2,19 @@ package com.olympic.model.entity;
 
 import java.util.Date;
 
-public class Player {
+public class User {
 
     private int id;
     private String name;
     private Date dob;
     private String game;
     private String country;
+    private String email;
     private String username;
     private String password;
+    private String userType;
 
-    public Player() {
+    public User() {
     }
 
     public int getId() {
@@ -55,6 +57,14 @@ public class Player {
         this.country = country;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -69,6 +79,14 @@ public class Player {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     @Override

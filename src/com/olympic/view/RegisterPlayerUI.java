@@ -1,43 +1,67 @@
 package com.olympic.view;
 
-import com.olympic.bean.ScannerBean;
 import com.olympic.dao.PlayerDAOService;
-import com.olympic.model.entity.Player;
+import com.olympic.model.entity.User;
 import com.olympic.util.DateUtil;
+import com.olympic.util.EncryptionUtil;
 import com.olympic.validations.PlayerValidation;
 
-import java.util.Scanner;
+
+import static com.olympic.bean.ScannerBean.readIntInput;
+import static com.olympic.bean.ScannerBean.readStringInput;
 
 
 public class RegisterPlayerUI {
 
     public void registerPlayer() {
 
-        Scanner scanner = ScannerBean.getScanner();
-        boolean isPasswordValid;
-
-        Player player = new Player();
-
         WelcomePlayerUI welcomePlayerUI = new WelcomePlayerUI();
         PlayerDAOService playerDAOService = new PlayerDAOService();
-        PlayerValidation playerValidation = new PlayerValidation();
+        User user = new User();
 
-        System.out.println("Enter player name : ");
-        player.setName(scanner.nextLine());
-        System.out.println("Enter player dob : ");
-        player.setDob(DateUtil.convertStringtoDate(scanner.nextLine()));
-        System.out.println("Enter player game : ");
-        player.setGame(scanner.nextLine());
-        System.out.println("Enter country of the player : ");
-        player.setCountry(scanner.nextLine());
-        System.out.println("Enter the username you want : ");
-        player.setUsername(scanner.nextLine());
-        System.out.println("Enter the password : ");
-        player.setPassword(scanner.nextLine());
 
-        isPasswordValid = playerValidation.validatePassword(player.getPassword());
+        if (readIntInput("Select 1 for Player and 2 for Admin - ") == 1) {
+            user.setUserType("player");
+            user.setName(readStringInput("Enter player name : "));
+            user.setDob(DateUtil.convertStringtoDate(readStringInput("Enter player dob : ")));
+            user.setGame(readStringInput("Enter player game : "));
+            user.setCountry(readStringInput("Enter country of the player : "));
+            user.setEmail(readStringInput("Enter email address : "));
+            user.setUsername(readStringInput("Enter the username you want : "));
+            user.setPassword(EncryptionUtil.encryptPassword(readStringInput("Enter the password : ")));
+        } else if (readIntInput("") == 2) {
+            user.setUserType("admin");
+        } else {
+            System.out.println("Enter correct input.");
+            registerPlayer();
+        }
 
-        if (!isPasswordValid) {
+        validateEmail(user.getEmail());
+        validatePassword(user.getPassword());
+        validateUsername(user.getUsername());
+
+        playerDAOService.save(user);
+        System.out.println("Congratulations! Registration is successful.\n");
+        welcomePlayerUI.welcomePlayer(user);
+    }
+
+    private void validateUsername(String username) {
+        if (new PlayerDAOService().checkUsernameExists(username)) {
+            System.out.println("Username already exist. Please enter different username.");
+            registerPlayer();
+        }
+    }
+
+    private void validateEmail(String email) {
+        if (!new PlayerValidation().validateEmail(email)) {
+            System.out.println("Invalid email id, please enter valid email id");
+            System.out.println("\n");
+            registerPlayer();
+        }
+    }
+
+    private void validatePassword(String password) {
+        if (!new PlayerValidation().validatePassword(password)) {
             System.out.println("\nNote - Password should follow below patter -\n" +
                     "Atleast one capital letter, \natleast one small letter, " +
                     "\natleast one number, \natleast one special character except hyphen, " +
@@ -46,14 +70,5 @@ public class RegisterPlayerUI {
             registerPlayer();
         }
 
-        if (!playerDAOService.checkUsernameExists(player.getUsername())) {
-            playerDAOService.save(player);
-            System.out.println("Congratulations! Registration is successful.\n");
-
-            welcomePlayerUI.welcomePlayer(player);
-        } else {
-            System.out.println("Username already exist. Please enter different username.");
-            registerPlayer();
-        }
     }
 }

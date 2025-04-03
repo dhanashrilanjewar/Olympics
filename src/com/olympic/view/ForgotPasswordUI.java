@@ -2,11 +2,9 @@ package com.olympic.view;
 
 import com.olympic.bean.ScannerBean;
 import com.olympic.dao.PlayerDAOService;
-import com.olympic.model.entity.Player;
+import com.olympic.model.entity.User;
 import com.olympic.service.OlympicService;
-import com.olympic.util.DateUtil;
-
-import java.util.Date;
+import com.olympic.util.EncryptionUtil;
 import java.util.Scanner;
 
 public class ForgotPasswordUI {
@@ -14,7 +12,7 @@ public class ForgotPasswordUI {
         Scanner scanner = ScannerBean.getScanner();
         PlayerDAOService playerDAOService = new PlayerDAOService();
         OlympicService olympicService = new OlympicService();
-        Player player;
+        User user;
         String username;
         String dob;
 
@@ -26,9 +24,9 @@ public class ForgotPasswordUI {
         //dob = DateUtil.convertStringtoDate(scanner.nextLine());
 
 
-        player = playerDAOService.getPlayerByUsernameandDOB(username, dob);
-        if (player != null) {
-            System.out.println("Your password is : " + player.getPassword()+"\n");
+        user = playerDAOService.getPlayerByUsernameandDOB(username, dob);
+        if (user != null) {
+            System.out.println("Your password is : " + EncryptionUtil.decryptPassword(user.getPassword())+"\n");
             olympicService.homePage();
         } else {
             System.out.println("User not found. Enter correct username and DOB");
